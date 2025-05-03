@@ -303,17 +303,7 @@
   </div>
 
 
-  <!-- query modal (unchanged) -->
-  <div class="modal" id="queryModal">
-    <div class="modal-content">
-      <button style="float:right;background:none;border:none;color:white;font-size:1.2rem;cursor:pointer;" onclick="closeQueryModal()">✖</button>
-      <h3>Run Custom Query</h3>
-      <textarea id="queryInput" rows="4" style="width:100%;padding:10px;"></textarea>
-      <button onclick="runQuery()">Run Query</button>
-      <pre class="message" id="queryResult" style="text-align:left;max-height:300px;overflow:auto;background:#111;padding:10px;border-radius:5px;"></pre>
-    </div>
-  </div>
-
+  
   <script>
     const modal = document.getElementById('authModal');
     function openModal() { modal.style.display='flex'; }
@@ -321,7 +311,31 @@
       if (e.target===modal) modal.style.display='none';
       if (e.target===document.getElementById('modal')) document.getElementById('modal').style.display='none';
     };
-  
+    function submitLogin() {
+      const m = document.getElementById('loginMessage');
+      m.textContent='Logging in...';
+      setTimeout(()=>{m.textContent='Success!';},1000);
+    }
+    setTimeout(()=>{document.getElementById('main').style.display='block';},3000);
+    function revealContent(){
+      const c=document.getElementById('content');
+      const b=document.querySelector('.btn');
+      c.style.display='block'; c.classList.add('fade-in-section'); b.style.display='none';
+    }
+
+    let currentAction='login';
+    function showModal(action){
+      currentAction=action;
+      const m = document.getElementById('modal');
+      m.style.display='flex';
+      document.getElementById('loginForm').style.display = action==='login'?'block':'none';
+      document.getElementById('registerForm').style.display = action==='register'?'block':'none';
+      document.getElementById('msgLogin').textContent='';
+      document.getElementById('msgRegister').textContent='';
+    }
+    document.getElementById('toRegister').onclick=()=>showModal('register');
+    document.getElementById('toLogin').onclick=()=>showModal('login');
+
     async function submitForm(){
       const url=`http://localhost:5000/${currentAction}`;
       let payload;
