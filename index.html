@@ -74,60 +74,27 @@
 
  
   <script>
-    const modal = document.getElementById('authModal');
-    function openModal() { modal.style.display='flex'; }
-    window.onclick = e => {
-      if (e.target===modal) modal.style.display='none';
-      if (e.target===document.getElementById('modal')) document.getElementById('modal').style.display='none';
-    };
-    function revealContent(){
-      const c=document.getElementById('content');
-      const b=document.querySelector('.btn');
-      c.style.display='block'; c.classList.add('fade-in-section'); b.style.display='none';
-    }
+  const modal = document.getElementById('authModal');
 
-  
-   
-    async function deleteAccount(){
-      const token=localStorage.getItem('token');
-      if(!token) return alert('Login first!');
-      const email=JSON.parse(atob(token.split('.')[1])).email;
-      const res=await fetch('http://localhost:5000/deleteUser',{method:'DELETE',headers:{'Content-Type':'application/json'},body:JSON.stringify({email})});
-      const data=await res.json();
-      alert(data.message);
-      if(res.ok) logout();
-    }
-    function logout(){
-      localStorage.removeItem('token');
-      document.getElementById('authButtons').style.display='flex';
-      document.getElementById('userActions').style.display='none';
-    }
-    async function runQuery(){
-      const q=document.getElementById('queryInput').value.trim();
-      const box=document.getElementById('queryResult');
-      if(!q){box.textContent='Please enter a query.';return;}
-      try {
-        const res=await fetch('http://localhost:5000/query',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({query:q})});
-        const data=await res.json();
-        box.textContent=res.ok?JSON.stringify(data,null,2):data.error||'Something went wrong.';
-      } catch {
-        box.textContent='❌ Cannot connect to backend.';
-      }
-    }
-    function closeQueryModal(){ document.getElementById('queryModal').style.display='none'; }
+  function openModal() {
+    modal.style.display = 'flex';
+  }
 
-    window.onload = ()=>{
-      const p = new URLSearchParams(window.location.search).get('token');
-      if(p){
-        localStorage.setItem('token',p);
-        history.replaceState({},document.title,'/blackridge.html');
-        document.getElementById('authButtons').style.display='none';
-        document.getElementById('userActions').style.display='flex';
-      } else if(localStorage.getItem('token')){
-        document.getElementById('authButtons').style.display='none';
-        document.getElementById('userActions').style.display='flex';
-      }
-    };
-  </script>
+  window.onclick = e => {
+    if (e.target === modal)
+      modal.style.display = 'none';
+    if (e.target === document.getElementById('modal'))
+      document.getElementById('modal').style.display = 'none';
+  };
+
+  function revealContent() {
+    const c = document.getElementById('content');
+    const b = document.querySelector('.btn');
+    c.style.display = 'block';
+    c.classList.add('fade-in-section');
+    b.style.display = 'none';
+  }
+</script>
+
 </body>
 </html>
