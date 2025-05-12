@@ -1,5 +1,4 @@
 
-
  body {
       width: 100%;
       height: 100%;
@@ -76,44 +75,125 @@
       from { opacity: 0; transform: translateY(30px); }
       to   { opacity: 1; transform: translateY(0); }
     }
+@font-face {
+  font-family: 'DejaVu Serif Condensed';
+  src: url('fonts/DejaVuSerifCondensed.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
 
-    header {
-      background-color: #0f0f0f;
-      padding: 2rem;
-      text-align: center;
-      position: relative;
-      z-index: 1;
-    }
+@font-face {
+  font-family: 'DejaVu Serif Condensed';
+  src: url('fonts/DejaVuSerifCondensed-Bold.ttf') format('truetype');
+  font-weight: bold;
+  font-style: normal;
+}
 
-    header h1 {
-      font-size: 3rem;
-      margin-bottom: 0.5rem;
-    }
+@font-face {
+  font-family: 'DejaVu Serif Condensed';
+  src: url('fonts/DejaVuSerifCondensed-Italic.ttf') format('truetype');
+  font-weight: normal;
+  font-style: italic;
+}
 
-    header p {
-      font-size: 1.2rem;
-      color: #bbb;
-    }
+@font-face {
+  font-family: 'DejaVu Serif Condensed';
+  src: url('fonts/DejaVuSerifCondensed-BoldItalic.ttf') format('truetype');
+  font-weight: bold;
+  font-style: italic;
+}
+.header-wrapper {
+  width: 100%;
+  background-color: #0f0f0f;
+position: relative;
+  z-index: 10; 
+}
 
-    .hero {
-      background: linear-gradient(to right, #111, #222);
-      padding: 5rem 2rem;
-      text-align: center;
-      position: relative;
-      z-index: 1;
-    }
 
-    .hero h2 {
-      font-size: 2.5rem;
-      margin-bottom: 1rem;
-    }
+header {
+  background-color: #808080;
+  padding: 30px 0;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+ z-index: 10;
+}
 
-    .hero p {
-      font-size: 1.2rem;
-      max-width: 600px;
-      margin: 0 auto 2rem;
-      color: #ccc;
-    }
+.black-bar {
+  height: 25px;
+  background-color: #0f0f0f;
+  width: 100%;
+}
+
+.branding-wrapper {
+  display: flex;
+  align-items: center;
+}
+.branding {
+  display: flex;
+  align-items: center;
+  gap: 1rem; /* spacing between logo and text */
+}
+
+.header-container {
+  display: flex;
+  justify-content: center; /* centers .branding horizontally */
+  align-items: center;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+.spacer {
+  width: 20px; /* Adjust this value (e.g., 15px, 25px) for visual balance */
+  height: 1px;
+}
+.logo {
+    width: 80px;
+    height: auto;
+}
+.brand-text {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+.brand-text h1 {
+    font-family: 'DejaVu Serif Condensed', serif;
+    font-weight: bold;
+    font-style: italic;
+    font-size: 2.2rem;
+    margin: 0;
+}
+
+.brand-text p {
+    font-family: 'DejaVu Serif Condensed', serif;
+    font-weight: normal;
+    font-style: italic;
+    font-size: 1.1rem;
+    color: #bbb;
+    margin: 0.2rem 0 0 0;
+}
+
+
+.hero {
+    background: linear-gradient(to right, #111, #222);
+    padding: 5rem 2rem;
+    text-align: center;
+    position: relative;
+    z-index: 1;
+}
+
+.hero h2 {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+}
+
+.hero p {
+    font-size: 1.2rem;
+    max-width: 600px;
+    margin: 0 auto 2rem;
+    color: #ccc;
+}
 
     .btn {
       display: inline-block;
@@ -171,7 +251,10 @@
       transition: transform 0.3s ease;
     }
 
-    .service-card:hover { transform: translateY(-5px); }
+    .service-card:hover { transform: translateY(-5px); 
+  border-color: #FFFFFF; 
+
+}
 
     .footer {
       background-color: #111;
