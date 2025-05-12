@@ -111,7 +111,7 @@ position: relative;
 
 
 header {
-  background-color: #808080;
+  background-color: #545454;
   padding: 30px 0;
   width: 100%;
   display: flex;
@@ -198,34 +198,49 @@ header {
     .btn {
       display: inline-block;
       padding: 0.75rem 1.5rem;
-      background-color: #0078f2;
+      background-color: #3B3B3B;
       color: white;
       border: none;
       border-radius: 5px;
       text-decoration: none;
       transition: background 0.3s ease;
       cursor: pointer;
+border-color: #FFFFFF;
     }
 
-    .btn:hover { background-color: #005ec9; }
+    .btn:hover { 
+background-color: #666666;
+border-color: #FFFFFF;
+transform: translateY(-3px); 
+ }
 
     .auth-btns {
-      position: absolute;
-      top: 20px;
-      right: 30px;
-      display: flex;
-      gap: 10px;
-      z-index: 100;
-    }
+  position: absolute;
+  top: 10px; 
+  right: 30px;
+  display: flex;
+  gap: 10px;
+  z-index: 100;
+}
+
 
     .auth-btns button {
-      background: transparent;
-      color: white;
-      border: 1px solid #444;
-      border-radius: 6px;
-      padding: 6px 12px;
-      cursor: pointer;
-    }
+     background: linear-gradient(to bottom, #1c1c1c, #3b3b3b);
+  color: #ffffff;
+  border: 1px solid #444;
+  border-radius: 4px;
+  padding: 8px 18px;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+.auth-btns button:hover {
+ transform: translateY(-3px); 
+  border-color: #FFFFFF;
+}
+
 
     section {
       padding: 4rem 2rem;
@@ -251,13 +266,14 @@ header {
       transition: transform 0.3s ease;
     }
 
-    .service-card:hover { transform: translateY(-5px); 
+    .service-card:hover { 
+transform: translateY(-5px); 
   border-color: #FFFFFF; 
 
 }
 
     .footer {
-      background-color: #111;
+      background-color: #212121;
       text-align: center;
       padding: 2rem;
       font-size: 0.9rem;
