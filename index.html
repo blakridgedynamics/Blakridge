@@ -160,9 +160,10 @@ header {
 }
 
     .main-content {
+      opacity:1;
   margin-left: 20%;
   padding: 60px 40px;
-  background: linear-gradient(to bottom, rgba(17, 17, 17, 0.5 ) 0%, rgba(0, 0, 0, 0.5) 100%);
+  background:( #000 60%);
   min-height: calc(100vh - 196px);
 }
 
@@ -301,14 +302,24 @@ transform: translateY(-5px);
   border-color: #FFFFFF; 
 
 }
-    #aurora-canvas {
-  position: fixed;
+ canvas {
+  position: fixed; /* Sticks to viewport */
   top: 0;
   left: 0;
-  z-index: -1;
-  width: 100%;
-  height: 100%;
+  width: 100vw; /* Full width */
+  height: 100vh; /* Full height */
+  z-index: -1; /* Pushes it behind everything */
+  pointer-events: none; /* Prevents it from blocking clicks */
 }
+
+#aurora-canvas {
+  z-index: 1;
+}
+#canvas {
+  z-index: 2;
+}
+
+
 
     .footer {
       background-color: #212121;
@@ -318,7 +329,11 @@ transform: translateY(-5px);
       color: #888;
     }
 
-    .content-below-hero { display: none; }
+    .content-below-hero { 
+      margin-left: 20%;
+      padding: 60px 40px;
+      display: none;
+     }
 
     .modal {
       display: none;
@@ -354,7 +369,9 @@ transform: translateY(-5px);
     <img src="blakridge-logo.png" alt="Blackridge Logo" />
   </div>
 
-<canvas id="aurora-canvas"></canvas> <!-- Move here to stay behind everything -->
+ <canvas id="canvas"></canvas>
+ <canvas id="aurora-canvas"></canvas> <!-- Move here to stay behind everything -->
+
 
   <div class="sidebar"></div>
   
@@ -429,7 +446,6 @@ transform: translateY(-5px);
 
 
  <script>
- 
   const modal = document.getElementById('authModal');
 
   function openModal() {
@@ -437,10 +453,9 @@ transform: translateY(-5px);
   }
 
   window.onclick = e => {
-    if (e.target === modal)
+    if (e.target === modal || e.target === document.getElementById('modal')) {
       modal.style.display = 'none';
-    if (e.target === document.getElementById('modal'))
-      document.getElementById('modal').style.display = 'none';
+    }
   };
 
   function revealContent() {
@@ -451,84 +466,127 @@ transform: translateY(-5px);
     b.style.display = 'none';
   }
 
-   window.addEventListener("load", () => {
+  window.addEventListener("load", () => {
     setTimeout(() => {
       document.querySelector(".main").style.display = "block";
     }, 3200); // 3s intro + 0.2s buffer
   });
 
-  const canvas = document.getElementById('aurora-canvas');
-const ctx = canvas.getContext('2d');
-canvas.width = window.innerWidth;
-canvas.height = window.innerHeight;
+  // ---------------------- Aurora Canvas ----------------------
+  const auroraCanvas = document.getElementById("aurora-canvas");
+  const auroraCtx = auroraCanvas.getContext("2d");
 
-let hue = 0;
-
-const particles = [];
-const NUM_PARTICLES = 12; // Fewer, smoother trails
-
-class Particle {
-  constructor() {
-    this.reset();
+  function resizeAuroraCanvas() {
+    auroraCanvas.width = window.innerWidth;
+    auroraCanvas.height = window.innerHeight;
   }
 
-  reset() {
-    this.x = Math.random() * canvas.width;
-    this.y = Math.random() * canvas.height;
-    this.radius = Math.random() * 80 + 80;
-    this.angle = Math.random() * 2 * Math.PI;
-    this.speed = Math.random() * 0.2 + 0.05;
-    this.hueOffset = Math.random() * 360;
-  }
+  resizeAuroraCanvas();
+  window.addEventListener("resize", () => {
+    resizeAuroraCanvas();
+    drawStaticAurora();
+  });
 
-  update() {
-    this.angle += this.speed;
-    this.x += Math.cos(this.angle) * 0.3;
-    this.y += Math.sin(this.angle) * 0.3;
+  class StaticBlob {
+    constructor() {
+      this.x = Math.random() * auroraCanvas.width;
+      this.y = Math.random() * auroraCanvas.height;
+      this.radius = Math.random() * 50 + 100;
+      this.alpha = Math.random() * 0.3 + 0.35;
+      this.hue = Math.random() * 360;
+    }
 
-    // Wrap around
-    if (this.x < 0 || this.x > canvas.width || this.y < 0 || this.y > canvas.height) {
-      this.reset();
+    draw() {
+      const gradient = auroraCtx.createRadialGradient(
+        this.x, this.y, 0,
+        this.x, this.y, this.radius
+      );
+      gradient.addColorStop(0, `hsla(${this.hue}, 100%, 60%, ${this.alpha})`);
+      gradient.addColorStop(1, `hsla(${this.hue}, 100%, 60%, 0)`);
+
+      auroraCtx.beginPath();
+      auroraCtx.fillStyle = gradient;
+      auroraCtx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+      auroraCtx.fill();
     }
   }
 
-  draw() {
-    const gradient = ctx.createRadialGradient(this.x, this.y, 0, this.x, this.y, this.radius);
-    const currentHue = (hue + this.hueOffset) % 360;
-    gradient.addColorStop(0, `hsla(${currentHue}, 100%, 70%, 0.08)`);
-    gradient.addColorStop(1, 'transparent');
-    ctx.fillStyle = gradient;
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
+  const blobs = [];
+  const NUM_BLOBS = 12;
+  for (let i = 0; i < NUM_BLOBS; i++) {
+    blobs.push(new StaticBlob());
   }
-}
 
-for (let i = 0; i < NUM_PARTICLES; i++) {
-  particles.push(new Particle());
-}
+  function drawStaticAurora() {
+    auroraCtx.clearRect(0, 0, auroraCanvas.width, auroraCanvas.height);
+    blobs.forEach(blob => blob.draw());
+  }
 
-function drawAurora() {
-  ctx.fillStyle = 'rgba(0, 0, 0, 0.05)'; // Smooth trail fade
-  ctx.fillRect(0, 0, canvas.width, canvas.height);
+  drawStaticAurora();
 
-  hue += 0.3;
+  // ---------------------- Particle Network Canvas ----------------------
+  const canvas = document.getElementById('canvas');
+  const ctx = canvas.getContext('2d');
 
-  particles.forEach(p => {
-    p.update();
-    p.draw();
-  });
+  function resizeMainCanvas() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+  }
 
-  requestAnimationFrame(drawAurora);
-}
+  resizeMainCanvas();
+  window.addEventListener('resize', resizeMainCanvas);
 
-drawAurora();
+  const numParticles = 100;
+  const maxDistance = 120;
+  const particles = [];
 
-window.addEventListener('resize', () => {
-  canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight;
-});
+  for (let i = 0; i < numParticles; i++) {
+    particles.push({
+      x: Math.random() * canvas.width,
+      y: Math.random() * canvas.height,
+      vx: (Math.random() - 0.5) * 1.5,
+      vy: (Math.random() - 0.5) * 1.5
+    });
+  }
 
+  function animate() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.fillStyle = 'white';
+    ctx.strokeStyle = 'rgba(255, 255, 255, 0.2)';
 
+    for (let i = 0; i < numParticles; i++) {
+      const p = particles[i];
+      p.x += p.vx;
+      p.y += p.vy;
+
+      if (p.x <= 0 || p.x >= canvas.width) p.vx *= -1;
+      if (p.y <= 0 || p.y >= canvas.height) p.vy *= -1;
+
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, 2, 0, Math.PI * 2);
+      ctx.fill();
+
+      for (let j = i + 1; j < numParticles; j++) {
+        const q = particles[j];
+        const dx = p.x - q.x;
+        const dy = p.y - q.y;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+
+        if (dist < maxDistance) {
+          ctx.beginPath();
+          ctx.moveTo(p.x, p.y);
+          ctx.lineTo(q.x, q.y);
+          ctx.stroke();
+        }
+      }
+    }
+
+    requestAnimationFrame(animate);
+  }
+
+  animate();
 </script>
+
 
 </body>
 </html>
