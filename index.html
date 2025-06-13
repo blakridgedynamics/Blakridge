@@ -565,8 +565,7 @@ footer.footer {
         <h2>Contact Us</h2>
         <p>Email: mahajan010203@gmail.com | Phone: +91 8544786295</p>
       </section>
-
-      <footer class="footer">&copy; 2025 Blackridge Systems. All rights reserved.</footer>
+ <footer class="footer">&copy; 2025 Blackridge Systems. All rights reserved.</footer>
     </div>
   </div>
 
@@ -652,65 +651,81 @@ footer.footer {
 
   // ---------------------- Particle Network Canvas ----------------------
   const canvas = document.getElementById('canvas');
-  const ctx = canvas.getContext('2d');
+const ctx = canvas.getContext('2d');
 
-  function resizeMainCanvas() {
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-  }
+// Adjust canvas for high-DPI (retina) screens
+function resizeMainCanvas() {
+  const ratio = window.devicePixelRatio || 1;
+  canvas.width = window.innerWidth * ratio;
+  canvas.height = window.innerHeight * ratio;
+  canvas.style.width = window.innerWidth + "px";
+  canvas.style.height = window.innerHeight + "px";
+  ctx.setTransform(ratio, 0, 0, ratio, 0, 0);
+}
 
-  resizeMainCanvas();
-  window.addEventListener('resize', resizeMainCanvas);
+resizeMainCanvas();
+window.addEventListener('resize', resizeMainCanvas);
 
-  const numParticles = 100;
-  const maxDistance = 120;
-  const particles = [];
+// Set particle count and connection distance based on device size
+let numParticles, maxDistance;
+if (window.innerWidth < 768) {
+  numParticles = 40;
+  maxDistance = 70;
+} else {
+  numParticles = 100;
+  maxDistance = 120;
+}
+
+// Generate particles
+const particles = [];
+for (let i = 0; i < numParticles; i++) {
+  particles.push({
+    x: Math.random() * canvas.width,
+    y: Math.random() * canvas.height,
+    vx: (Math.random() - 0.5) * 1.5,
+    vy: (Math.random() - 0.5) * 1.5
+  });
+}
+
+// Animation loop
+function animate() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  ctx.fillStyle = 'white';
+  ctx.strokeStyle = 'rgba(255, 255, 255, 0.3)';
+  ctx.lineWidth = 0.6;
 
   for (let i = 0; i < numParticles; i++) {
-    particles.push({
-      x: Math.random() * canvas.width,
-      y: Math.random() * canvas.height,
-      vx: (Math.random() - 0.5) * 1.5,
-      vy: (Math.random() - 0.5) * 1.5
-    });
-  }
+    const p = particles[i];
 
-  function animate() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    ctx.fillStyle = 'white';
-    ctx.strokeStyle = 'rgba(255, 255, 255, 0.2)';
+    p.x += p.vx;
+    p.y += p.vy;
 
-    for (let i = 0; i < numParticles; i++) {
-      const p = particles[i];
-      p.x += p.vx;
-      p.y += p.vy;
+    if (p.x <= 0 || p.x >= canvas.width) p.vx *= -1;
+    if (p.y <= 0 || p.y >= canvas.height) p.vy *= -1;
 
-      if (p.x <= 0 || p.x >= canvas.width) p.vx *= -1;
-      if (p.y <= 0 || p.y >= canvas.height) p.vy *= -1;
+    ctx.beginPath();
+    ctx.arc(p.x, p.y, 2, 0, Math.PI * 2);
+    ctx.fill();
 
-      ctx.beginPath();
-      ctx.arc(p.x, p.y, 2, 0, Math.PI * 2);
-      ctx.fill();
+    for (let j = i + 1; j < numParticles; j++) {
+      const q = particles[j];
+      const dx = p.x - q.x;
+      const dy = p.y - q.y;
+      const dist = Math.sqrt(dx * dx + dy * dy);
 
-      for (let j = i + 1; j < numParticles; j++) {
-        const q = particles[j];
-        const dx = p.x - q.x;
-        const dy = p.y - q.y;
-        const dist = Math.sqrt(dx * dx + dy * dy);
-
-        if (dist < maxDistance) {
-          ctx.beginPath();
-          ctx.moveTo(p.x, p.y);
-          ctx.lineTo(q.x, q.y);
-          ctx.stroke();
-        }
+      if (dist < maxDistance) {
+        ctx.beginPath();
+        ctx.moveTo(p.x, p.y);
+        ctx.lineTo(q.x, q.y);
+        ctx.stroke();
       }
     }
-
-    requestAnimationFrame(animate);
   }
 
-  animate();
+  requestAnimationFrame(animate);
+}
+
+animate();
 
   const closeBtn = document.getElementById("closeSidebar");
 const openBtn = document.getElementById("openSidebar");
