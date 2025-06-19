@@ -1,57 +1,763 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>LED Text Scroll</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Blackridge Systems</title>
+  <link rel="icon" type="image/png" href="image.png" />
+  <link href="https://fonts.googleapis.com/css2?family=Jura:wght@700&display=swap" rel="stylesheet">
   <style>
-    body {
+ * {
       margin: 0;
-      background-color: black;
-      overflow: hidden;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      
+      background-color: #000;
+      color: white;
+    }
+ .sidebar {
+      position: fixed;
+      left: 0;
+      top: 0;
+      width: 20%;
+      height: 100vh;
+      opacity: 1;
+      background-color: #262323;
+      
     }
 
-    .led-wrapper {
-      width: 100vw;
-      height: 100vh;
+ .header {
+  background: linear-gradient(90deg, #3A0CA3 0%, #7146BC 32%, #3481E5 77%, #00F5D4 100%); 
+  backdrop-filter: blur(10px); 
+  -webkit-backdrop-filter: blur(10px); 
+  background-color: rgba(255, 255, 255, 0.1); 
+  border-radius: 12px;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  padding: 2rem;
+  color:black; 
+  font-family: 'Jura', sans-serif;
+  display: flex;
+  justify-content: center;    
+  align-items: center; 
+  text-align:center;         
+margin-left: var(--header-margin, 20%);
+width: calc(100% - var(--header-margin, 20%));
+transition: all 0.3s ease;
+  height: 120px;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  padding: 0 40px;
+}
+.sidebar-toggle {
+  position: absolute;
+  left: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 101;
+}
+
+.sidebar-toggle button {
+  background: none;
+  border: none;
+  color: black;
+  font-size: 1.8rem;
+  cursor: pointer;
+  padding: 8px 12px;
+  border-radius: 8px;
+  transition: background 0.3s ease;
+}
+
+.sidebar-toggle button:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+#openSidebar {
+  display: none; /* hidden initially */
+}
+
+   .logo-text {
       display: flex;
       align-items: center;
-      justify-content: flex-start;
-      overflow: hidden;
-      position: relative;
+      gap: 20px;
     }
 
-    .led-text {
-      font-size: 8vw;
+    .logo-text img {
+      height: 90px;
+    }
+
+    .logo-text h1 {
+      font-size: 48px;
       font-weight: bold;
-      text-transform: uppercase;
-      white-space: nowrap;
-      color: red;
-      position: absolute;
-      animation: scrollText 7s linear infinite;
-      background: repeating-linear-gradient(
-        to right,
-        black 0px,
-        black 3px,
-        red 3px,
-        red 6px
-      );
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
+      color:#000;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
     }
 
-    @keyframes scrollText {
-      0% {
-        transform: translateX(100%);
-      }
-      100% {
-        transform: translateX(-100%);
+    .logo-text p{
+      font-size: 20px;
+      color:#000;
+      text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
+    }
+
+    .intro {
+      transition: opacity 1.5s ease;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background-color: #0f0f0f;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+      animation: fadeOut 2s ease 3s forwards;
+    }
+.intro img {
+  width: auto;
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  animation: zoomIn 2.2s ease-in-out;
+  transform-origin: center center;
+  will-change: transform, opacity;
+}
+
+
+   @keyframes zoomIn {
+  from { transform: scale(0.95); opacity: 0; }
+  to   { transform: scale(1); opacity: 1; }
+}
+
+
+    @keyframes fadeOut {
+      to { opacity: 0; visibility: hidden; }
+    }
+
+    .main {
+      display: none;
+      animation: fadeIn 1.5s ease forwards;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to   { opacity: 1; }
+    }
+
+    .fade-in-section {
+      animation: fadeSlideUp 0.8s ease forwards;
+    }
+
+    @keyframes fadeSlideUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    
+.header-wrapper {
+  width: 100%;
+  background-color: #0f0f0f;
+position: relative;
+  z-index: 10; 
+}
+
+
+header {
+  background-color: #545454;
+  padding: 30px 0;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+ z-index: 10;
+}
+
+.black-bar {
+  height: 25px;
+  background-color: #0f0f0f;
+  width: 100%;
+}
+
+.branding-wrapper {
+  display: flex;
+  align-items: center;
+}
+.branding {
+  display: flex;
+  align-items: center;
+  gap: 1rem; /* spacing between logo and text */
+}
+
+    .main-content {
+      opacity:1;
+  margin-left: 20%;
+  padding: 60px 40px;
+  background:( #000 60%);
+  min-height: calc(100vh - 196px);
+}
+
+.spacer {
+  width: 20px; /* Adjust this value (e.g., 15px, 25px) for visual balance */
+  height: 1px;
+}
+.logo {
+    width: 80px;
+    height: auto;
+}
+.brand-text {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+.brand-text h1 {
+    font-family: 'DejaVu Serif Condensed', serif;
+    font-weight: bold;
+    font-style: italic;
+    font-size: 2.2rem;
+    margin: 0;
+}
+
+.brand-text p {
+    font-family: 'DejaVu Serif Condensed', serif;
+    font-weight: normal;
+    font-style: italic;
+    font-size: 1.1rem;
+    color: #bbb;
+    margin: 0.2rem 0 0 0;
+}
+
+
+  .intro-box {
+      background: #ffffff0d;
+      border-radius: 10px;
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+      max-width: 15 px;
+      margin: 0 ;
+      text-align: center;
+      padding: 6rem 4rem;
+    
+    }
+
+    .intro-box h2 {
+      font-size: 37px;
+      margin-top: -40px;
+      margin-bottom :25px;
+      font-weight: bold;
+      text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.7);
+    }
+
+    .intro-box p {
+      font-size: 18px;
+      margin-bottom: 50px;
+      color: #D9D9D9;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 0.75rem 1.5rem;
+      background-color: #3B3B3B;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      text-decoration: none;
+      transition: background 0.3s ease;
+      cursor: pointer;
+border-color: #FFFFFF;
+    }
+
+    .btn:hover { 
+background-color: #666666;
+border-color: #FFFFFF;
+transform: translateY(-3px); 
+ }
+
+    .auth-btns {
+  position: absolute;
+  top: 10px; 
+  right: 30px;
+  display: flex;
+  gap: 10px;
+  z-index: 100;
+}
+
+
+    .auth-btns button {
+     background: linear-gradient(to bottom, #1c1c1c, #3b3b3b);
+  color: #ffffff;
+  border: 1px solid #444;
+  border-radius: 4px;
+  padding: 8px 18px;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+.auth-btns button:hover {
+ transform: translateY(-3px); 
+  border-color: #FFFFFF;
+}
+
+
+    section {
+      padding: 4rem 2rem;
+      max-width: 1100px;
+      margin: auto;
+      position: relative;
+      z-index: 1;
+    }
+
+    .services, .about {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 2rem;
+      text-align: center;
+    }
+
+.service-card {
+  background: rgba(255, 255, 255, 0.08); /* Light transparent white */
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+  padding: 2rem;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0 0 30px rgba(255, 231, 231, 0.884), 0.05;
+
+}
+
+.service-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 40px rgba(255, 255, 255, 0.15);
+  border-color: #ffffff;
+}
+canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: -1;
+  pointer-events: none;
+}
+
+#aurora-canvas,
+#canvas {
+  z-index: -1 !important;
+}
+
+
+
+footer.footer {
+  margin: 40px auto 0; /* top margin: 40px, bottom: 0 */
+  padding: 20px;
+  width: calc(100% - 80px); /* leaves spacing on both sides */
+  max-width: 1000px;        /* optional: max width for readability */
+  background-color: rgba(20, 20, 20, 0.9);
+  border-radius: 12px;
+  text-align: center;
+}
+
+    .content-below-hero { 
+    margin-left: 20%;
+  padding: 60px 40px 80px;
+      display: none;
+     }
+
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.8);
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+    }
+
+@media (max-width: 768px) {
+  .sidebar {
+    display: none;
+  }
+
+  .header,
+  .main-content,
+  .content-below-hero {
+    margin-left: 0 !important;
+    width: 100% !important;
+    padding: 24px 16px !important;
+  }
+
+  .header {
+    margin-top: 10px;
+  }
+
+  .logo-text {
+    flex-direction: row;
+    gap: 10px;
+    align-items: center;
+    justify-content: flex-start;
+    text-align: left;
+    flex-wrap: wrap;
+  }
+
+  .logo-text img {
+    height: 50px;
+  }
+
+  .logo-text h1 {
+    font-size: 22px;
+    white-space: nowrap;
+  }
+
+  .logo-text p {
+    font-size: 12px;
+    white-space: nowrap;
+  }
+
+  .intro-box {
+    padding: 2rem 1rem;
+    margin-top: 20px;
+    margin-left: auto;
+    margin-right: auto;
+    width: 95%;
+    max-width: 100%;
+  }
+
+  .intro-box h2 {
+    margin-top: 10px; 
+    font-size: 20px;
+    word-wrap: break-word;
+    line-height: 1.3;
+  }
+
+  .intro-box p {
+    font-size: 14px;
+    word-wrap: break-word;
+    line-height: 1.4;
+  }
+
+  .btn {
+    font-size: 14px;
+    padding: 0.5rem 1rem;
+  }
+
+  .auth-btns {
+    top: 10px;
+    right: 10px;
+    flex-direction: row;
+    gap: 8px;
+  }
+
+  .auth-btns button {
+    font-size: 13px;
+    padding: 6px 12px;
+  }
+
+  .services,
+  .about {
+    grid-template-columns: 1fr;
+  }
+
+  .service-card {
+    padding: 1.5rem 1rem;
+  }
+
+  section {
+    padding: 2rem 1rem;
+  }
+
+  .footer {
+    padding: 1rem;
+    font-size: 0.8rem;
+  }
+}
+
+
+   </style>
+</head>
+  
+<body>
+ 
+
+    <div class="intro">
+    <img src="blakridge-logo.png" alt="Blackridge Logo" />
+  </div>
+
+ <canvas id="canvas"></canvas>
+ <canvas id="aurora-canvas"></canvas> <!-- Move here to stay behind everything -->
+
+
+  <div class="sidebar">
+      <button id="closeSidebar" title="Hide Sidebar">&#8592;</button>
+
+  </div>
+  
+<div class="auth-btns" id="authButtons">
+  <a href="login.html"><button>Login</button></a>
+  <a href="signup.html"><button>Sign Up</button></a>
+</div>
+
+ 
+
+
+<div class="header">
+
+  <div class="sidebar-toggle">
+  <button id="openSidebar" title="Show Sidebar">&#9776;</button>
+</div>
+
+    <div class="logo-text">
+      <img src="logo.png" alt="Logo">
+      <div>
+        <h1>Blakridge Systems</h1>
+        <p>Innovating the future</p>
+      </div>
+    </div>
+    
+  </div>
+
+  <div class="main-content">
+    <div class="intro-box">
+      <h2>Welcome to the Next Generation of Insights and Ideas</h2>
+      <p>Where Ideas Evolve. Discover curated insights, sharp opinions, and rich reads—<br>
+        from global headlines to timeless literature.</p>
+     <button class="btn" onclick="revealContent()">Get Started</button>
+    </div>
+  </div>
+      
+    </section>
+
+    <div class="content-below-hero" id="content">
+      <section class="about">
+        <div>
+          <h3>Who We Are</h3>
+          <p>Blakridge Systems is your gateway to a world of knowledge—curating the latest in national and international news, insightful book reviews, compelling articles, and thought-provoking topics. We’re committed to delivering intelligent content for readers who seek depth, clarity, and perspective in everything they explore.We provide knowledge rooted in facts and offer sharp perspectives that can refine the way you see the world.
+
+</p>
+        </div>
+      </section>
+
+      <section>
+        <h2 style="text-align:center; margin-bottom:2rem;">Our Services</h2>
+        <div class="services">
+          <div class="service-card"><h3>Defense News</h3><p>Know what’s happening in defense—strategic, sharp, and simplified.</p></div>
+
+          <div class="service-card"><h3>National News</h3><p>Stay updated on the latest happenings in your country .</p></div>
+
+          <div class="service-card"><h3>International News</h3><p>Keep up with global affairs</p></div>
+
+ <div class="service-card"><h3>Brainwave Breakthroughs</h3><p>Give yourself the chance to explore mind-blowing topics that will spark your curiosity.</p></div>
+
+ <div class="service-card"><h3>The Book Haven</h3><p>Explore captivating book reviews, recommendations, and discussions in one place.</p></div>
+
+ <div class="service-card"><h3>Leaders of Legacy</h3><p>Discover the stories of influential world leaders whose legacies continue to inspire and earn global respect.</p></div>
+
+
+
+        </div>
+      </section>
+
+      <section id="contact" style="text-align:center;">
+        <h2>Contact Us</h2>
+        <p>Email: mahajan010203@gmail.com | Phone: +91 8544786295</p>
+      </section>
+ <footer class="footer">&copy; 2025 Blackridge Systems. All rights reserved.</footer>
+    </div>
+  </div>
+
+
+ <script>
+  const modal = document.getElementById('authModal');
+
+  function openModal() {
+    modal.style.display = 'flex';
+  }
+
+  window.onclick = e => {
+    if (e.target === modal || e.target === document.getElementById('modal')) {
+      modal.style.display = 'none';
+    }
+  };
+
+  function revealContent() {
+    const c = document.getElementById('content');
+    const b = document.querySelector('.btn');
+    c.style.display = 'block';
+    c.classList.add('fade-in-section');
+    b.style.display = 'none';
+  }
+
+  window.addEventListener("load", () => {
+    setTimeout(() => {
+      document.querySelector(".main-content").style.display = "block";
+    }, 3000); // 3s intro + 0.2s buffer
+  });
+
+  // ---------------------- Aurora Canvas ----------------------
+  const auroraCanvas = document.getElementById("aurora-canvas");
+  const auroraCtx = auroraCanvas.getContext("2d");
+
+  function resizeAuroraCanvas() {
+    auroraCanvas.width = window.innerWidth;
+    auroraCanvas.height = window.innerHeight;
+  }
+
+  resizeAuroraCanvas();
+  window.addEventListener("resize", () => {
+    resizeAuroraCanvas();
+    drawStaticAurora();
+  });
+
+  class StaticBlob {
+    constructor() {
+      this.x = Math.random() * auroraCanvas.width;
+      this.y = Math.random() * auroraCanvas.height;
+      this.radius = Math.random() * 50 + 100;
+      this.alpha = Math.random() * 0.3 + 0.35;
+      this.hue = Math.random() * 360;
+    }
+
+    draw() {
+      const gradient = auroraCtx.createRadialGradient(
+        this.x, this.y, 0,
+        this.x, this.y, this.radius
+      );
+      gradient.addColorStop(0, `hsla(${this.hue}, 100%, 60%, ${this.alpha})`);
+      gradient.addColorStop(1, `hsla(${this.hue}, 100%, 60%, 0)`);
+
+      auroraCtx.beginPath();
+      auroraCtx.fillStyle = gradient;
+      auroraCtx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+      auroraCtx.fill();
+    }
+  }
+
+  const blobs = [];
+  const NUM_BLOBS = 12;
+  for (let i = 0; i < NUM_BLOBS; i++) {
+    blobs.push(new StaticBlob());
+  }
+
+  function drawStaticAurora() {
+    auroraCtx.clearRect(0, 0, auroraCanvas.width, auroraCanvas.height);
+    blobs.forEach(blob => blob.draw());
+  }
+
+  drawStaticAurora();
+
+  // ---------------------- Particle Network Canvas ----------------------
+  const canvas = document.getElementById('canvas');
+const ctx = canvas.getContext('2d');
+
+// Adjust canvas for high-DPI (retina) screens
+function resizeMainCanvas() {
+  const ratio = window.devicePixelRatio || 1;
+  canvas.width = window.innerWidth * ratio;
+  canvas.height = window.innerHeight * ratio;
+  canvas.style.width = window.innerWidth + "px";
+  canvas.style.height = window.innerHeight + "px";
+  ctx.setTransform(ratio, 0, 0, ratio, 0, 0);
+}
+
+resizeMainCanvas();
+window.addEventListener('resize', resizeMainCanvas);
+
+// Set particle count and connection distance based on device size
+let numParticles, maxDistance;
+if (window.innerWidth < 768) {
+  numParticles = 130;
+  maxDistance = 110;
+} else {
+  numParticles = 100;
+  maxDistance = 120;
+}
+
+// Generate particles
+const particles = [];
+for (let i = 0; i < numParticles; i++) {
+  particles.push({
+    x: Math.random() * canvas.width,
+    y: Math.random() * canvas.height,
+    vx: (Math.random() - 0.5) * 1.5,
+    vy: (Math.random() - 0.5) * 1.5
+  });
+}
+
+// Animation loop
+function animate() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  ctx.fillStyle = 'white';
+  ctx.strokeStyle = 'rgba(255, 255, 255, 0.3)';
+  ctx.lineWidth = 0.6;
+
+  for (let i = 0; i < numParticles; i++) {
+    const p = particles[i];
+
+    p.x += p.vx;
+    p.y += p.vy;
+
+    if (p.x <= 0 || p.x >= canvas.width) p.vx *= -1;
+    if (p.y <= 0 || p.y >= canvas.height) p.vy *= -1;
+
+    ctx.beginPath();
+    ctx.arc(p.x, p.y, 2, 0, Math.PI * 2);
+    ctx.fill();
+
+    for (let j = i + 1; j < numParticles; j++) {
+      const q = particles[j];
+      const dx = p.x - q.x;
+      const dy = p.y - q.y;
+      const dist = Math.sqrt(dx * dx + dy * dy);
+
+      if (dist < maxDistance) {
+        ctx.beginPath();
+        ctx.moveTo(p.x, p.y);
+        ctx.lineTo(q.x, q.y);
+        ctx.stroke();
       }
     }
-  </style>
-</head>
-<body>
-  <div class="led-wrapper">
-    <div class="led-text">You are my pasandida aurat</div>
-  </div>
+  }
+
+  requestAnimationFrame(animate);
+}
+
+animate();
+
+  const closeBtn = document.getElementById("closeSidebar");
+const openBtn = document.getElementById("openSidebar");
+const sidebar = document.querySelector(".sidebar");
+const header = document.querySelector(".header");
+const mainContent = document.querySelector(".main-content");
+const contentBelow = document.querySelector(".content-below-hero");
+
+closeBtn.onclick = () => {
+  sidebar.style.display = "none";
+  mainContent.style.marginLeft = "0";
+  contentBelow.style.marginLeft = "0";
+document.documentElement.style.setProperty('--header-margin', '0%');
+
+
+  closeBtn.style.display = "none";
+  openBtn.style.display = "inline-block";
+};
+
+openBtn.onclick = () => {
+  sidebar.style.display = "block";
+  mainContent.style.marginLeft = "20%";
+  contentBelow.style.marginLeft = "20%";
+  document.documentElement.style.setProperty('--header-margin', '20%');
+
+
+  openBtn.style.display = "none";
+  closeBtn.style.display = "inline-block";
+};
+
+</script>
+
+
 </body>
 </html>
