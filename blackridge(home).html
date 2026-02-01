@@ -1,402 +1,116 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Blackridge Systems</title>
-  <link rel="icon" type="image/png" href="image.png" />
-  <style>
-    /* your existing styles remain unchanged */
-    * { margin: 0; padding: 0; box-sizing: border-box; }
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Valentine’s Journey — Prananya 💖</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;overflow:hidden}
 
-    html, body {
-      width: 100%;
-      height: 100%;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background-color: #0f0f0f;
-      color: white;
-      overflow-x: hidden;
-      position: relative;
-    }
+/* ---------- GLOBAL ---------- */
+.app{display:flex;flex-direction:row;width:100vw;height:100vh;transition:transform .8s ease}
+.page{min-width:100vw;height:100vh;display:flex;align-items:center;justify-content:center;position:relative}
+.center{max-width:900px;padding:24px;text-align:center;color:white}
+h1{font-size:clamp(2rem,5vw,3.5rem);margin-bottom:.5rem;text-shadow:0 0 20px rgba(0,0,0,.5)}
+p{opacity:.9}
+.btn{margin-top:20px;padding:12px 26px;border-radius:999px;border:none;background:#ff9bbd;color:white;font-size:1rem;cursor:pointer;box-shadow:0 10px 30px rgba(255,155,189,.6)}
 
-    body::before {
-      content: "";
-      position: fixed;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      width: 60vmin;
-      height: 60vmin;
-      background-image: url('image.png');
-      background-size: contain;
-      background-repeat: no-repeat;
-      background-position: center;
-      opacity: 0.07;
-      z-index: 0;
-      pointer-events: none;
-      filter: brightness(1.2) contrast(1.1);
-    }
+/* ---------- HOME ---------- */
+.home{background:url('assets/home-bg.jpg') center/cover no-repeat}
+.home::after{content:"";position:absolute;inset:0;background:radial-gradient(circle at center,rgba(0,0,0,.15),rgba(0,0,0,.45))}
+.home .center{position:relative;z-index:2}
 
-    .intro {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
-      background-color: #0f0f0f;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 9999;
-      animation: fadeOut 2s ease 3s forwards;
-    }
+.kitty-holder{width:260px;height:260px;object-fit:contain;margin:20px auto;border-radius:28px;animation:float 4s ease-in-out infinite;filter:drop-shadow(0 0 35px rgba(255,180,210,.9));}
 
-    .intro img {
-      width: 100vw;
-      height: 100vh;
-      object-fit: cover;
-      animation: zoomIn 2s ease;
-    }
+/* glow halo */
+.kitty-holder::after{content:""}
 
-    @keyframes zoomIn {
-      from { transform: scale(0.1); opacity: 0; }
-      to   { transform: scale(1);   opacity: 1; }
-    }
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-18px)}}
 
-    @keyframes fadeOut {
-      to { opacity: 0; visibility: hidden; }
-    }
+/* ---------- DAYS BASE ---------- */
+.day{background:linear-gradient(180deg,#fff0f5,#fde4ec);color:white}
+.day::after{content:"";position:absolute;inset:0;background:rgba(0,0,0,.35)}
+.day .center{position:relative;z-index:2}
 
-    .main {
-      display: none;
-      animation: fadeIn 1.5s ease forwards;
-    }
+/* Individual day backgrounds */
+.promise{background:url('assets/promise-bg.jpg') center/cover no-repeat}
+.hug{background:url('assets/hug-bg.jpg') center/cover no-repeat}
+.kiss{background:url('assets/kiss-bg.jpg') center/cover no-repeat}
+.chocolate{background:url('assets/chocolate-bg.jpg') center/cover no-repeat}
+.teddy{background:url('assets/teddy-bg.jpg') center/cover no-repeat}
+.rose{background:url('assets/rose-bg.jpg') center/cover no-repeat}
+.propose{background:url('assets/propose-bg.jpg') center/cover no-repeat}
+.valentine{background:url('assets/valentine-bg.jpg') center/cover no-repeat}
+.love{background:url('assets/love-bg.jpg') center/cover no-repeat}
+.care{background:url('assets/care-bg.jpg') center/cover no-repeat}
+.together{background:url('assets/together-bg.jpg') center/cover no-repeat}
+.trust{background:url('assets/trust-bg.jpg') center/cover no-repeat}
+.miss{background:url('assets/miss-bg.jpg') center/cover no-repeat}
+.forever{background:url('assets/forever-bg.jpg') center/cover no-repeat}
 
-    @keyframes fadeIn {
-      from { opacity: 0; }
-      to   { opacity: 1; }
-    }
+/* ---------- HEARTS ---------- */
+.hearts{position:fixed;inset:0;pointer-events:none;overflow:hidden}
+.heart{position:absolute;bottom:-40px;font-size:16px;opacity:.8;animation:rise linear infinite}
+@keyframes rise{to{transform:translateY(-110vh);opacity:0}}
 
-    .fade-in-section {
-      animation: fadeSlideUp 0.8s ease forwards;
-    }
+footer{position:fixed;bottom:10px;left:0;right:0;text-align:center;color:#fff;opacity:.8;font-size:.85rem}
 
-    @keyframes fadeSlideUp {
-      from { opacity: 0; transform: translateY(30px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
-
-    header {
-      background-color: #0f0f0f;
-      padding: 2rem;
-      text-align: center;
-      position: relative;
-      z-index: 1;
-    }
-
-    header h1 {
-      font-size: 3rem;
-      margin-bottom: 0.5rem;
-    }
-
-    header p {
-      font-size: 1.2rem;
-      color: #bbb;
-    }
-
-    .hero {
-      background: linear-gradient(to right, #111, #222);
-      padding: 5rem 2rem;
-      text-align: center;
-      position: relative;
-      z-index: 1;
-    }
-
-    .hero h2 {
-      font-size: 2.5rem;
-      margin-bottom: 1rem;
-    }
-
-    .hero p {
-      font-size: 1.2rem;
-      max-width: 600px;
-      margin: 0 auto 2rem;
-      color: #ccc;
-    }
-
-    .btn {
-      display: inline-block;
-      padding: 0.75rem 1.5rem;
-      background-color: #0078f2;
-      color: white;
-      border: none;
-      border-radius: 5px;
-      text-decoration: none;
-      transition: background 0.3s ease;
-      cursor: pointer;
-    }
-
-    .btn:hover { background-color: #005ec9; }
-
-    .auth-btns {
-      position: absolute;
-      top: 20px;
-      right: 30px;
-      display: flex;
-      gap: 10px;
-      z-index: 100;
-    }
-
-    .auth-btns button {
-      background: transparent;
-      color: white;
-      border: 1px solid #444;
-      border-radius: 6px;
-      padding: 6px 12px;
-      cursor: pointer;
-    }
-
-    section {
-      padding: 4rem 2rem;
-      max-width: 1100px;
-      margin: auto;
-      position: relative;
-      z-index: 1;
-    }
-
-    .services, .about {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 2rem;
-      text-align: center;
-    }
-
-    .service-card {
-      background: rgba(255, 255, 255, 0.05);
-      backdrop-filter: blur(12px);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      padding: 2rem;
-      border-radius: 16px;
-      transition: transform 0.3s ease;
-    }
-
-    .service-card:hover { transform: translateY(-5px); }
-
-    .footer {
-      background-color: #111;
-      text-align: center;
-      padding: 2rem;
-      font-size: 0.9rem;
-      color: #888;
-    }
-
-    .content-below-hero { display: block; }
-
-    .modal {
-      display: none;
-      position: fixed;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      background: rgba(0,0,0,0.8);
-      justify-content: center;
-      align-items: center;
-      z-index: 9999;
-    }
-
-    /* —— UPDATED LOGIN/REGISTER MODAL STYLES —— */
-    #modal {
-      background: rgba(0,0,0,0.6);
-      /* no display here, so it stays hidden by default */
-      justify-content: center;
-      align-items: center;
-    }
-    #modal .modal-content {
-      width: 360px;
-      padding: 2rem;
-      border-radius: 8px;
-      background: #222;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.5);
-      max-height: 90vh;
-      overflow-y: auto;
-      text-align: center;
-    }
-    #modal .modal-content h3 { margin-bottom: 1rem; }
-    #modal .modal-content input {
-      width: 100%; margin: 0.5rem 0; padding: 0.5rem;
-      border-radius: 4px; border: 1px solid #444;
-      background: #111; color: white;
-    }
-    #modal .modal-content button {
-      margin-top: 1rem; width: 100%; padding: 0.6rem;
-      border: none; border-radius: 4px; cursor: pointer;
-      background: #0078f2; color: #fff;
-    }
-    #modal .toggle-link {
-      display: block; margin-top: 1rem;
-      font-size: 0.9rem; color: #aaa;
-      text-decoration: underline; cursor: pointer;
-    }
-  </style>
+</style>
 </head>
 <body>
-  <div class="intro">
-    <img src="blakridge-logo.png" alt="Blackridge Logo" />
+
+<div class="hearts" id="hearts"></div>
+
+<div class="app" id="app">
+
+<!-- HOME -->
+<section class="page home">
+  <div class="center">
+    <h1>Happy Valentine’s Week,<br>My Goddesssss 💖</h1>
+    <p>Prananya, every day with you feels like Valentine’s.</p>
+    <img src="assets/kitty.png" class="kitty-holder" alt="Hello Kitty">
+    <button class="btn" onclick="next()">Start Our Love Journey</button>
   </div>
+</section>
 
-      <div class="auth-btns" id="userActions" style="display: none;">
-      <button onclick="document.getElementById('queryModal').style.display='flex';">Run Query</button>
-    </div>
+<!-- DAYS -->
+<section class="page day promise"><div class="center"><h1>Promise Day</h1><p>I promise to choose you, every single day. Forever starts with us.</p><button class="btn" onclick="next()">Next</button></div></section>
+<section class="page day hug"><div class="center"><h1>Hug Day</h1><p>Your hugs are my safest place in this world.</p><button class="btn" onclick="next()">Next</button></div></section>
+<section class="page day kiss"><div class="center"><h1>Kiss Day</h1><p>Every kiss from you feels like magic on my soul.</p><button class="btn" onclick="next()">Next</button></div></section>
+<section class="page day chocolate"><div class="center"><h1>Chocolate Day</h1><p>You’re sweeter than every chocolate combined.</p><button class="btn" onclick="next()">Next</button></div></section>
+<section class="page day teddy"><div class="center"><h1>Teddy Day</h1><p>I wish I could hold you like a teddy all day.</p><button class="btn" onclick="next()">Next</button></div></section>
+<section class="page day rose"><div class="center"><h1>Rose Day</h1><p>Just like roses, you color my life with love.</p><button class="btn" onclick="next()">Next</button></div></section>
+<section class="page day propose"><div class="center"><h1>Propose Day</h1><p>Prananya, my Goddesssss… will you be my forever?</p><button class="btn" onclick="next()">Next</button></div></section>
+<section class="page day valentine"><div class="center"><h1>Valentine’s Day</h1><p>You’re my heart, my peace, my everything.</p><button class="btn" onclick="next()">Next</button></div></section>
+<section class="page day love"><div class="center"><h1>Love Day</h1><p>I love you without conditions, limits, or endings.</p><button class="btn" onclick="next()">Next</button></div></section>
+<section class="page day care"><div class="center"><h1>Care Day</h1><p>I’ll always protect your smile.</p><button class="btn" onclick="next()">Next</button></div></section>
+<section class="page day together"><div class="center"><h1>Togetherness Day</h1><p>Our future looks beautiful together.</p><button class="btn" onclick="next()">Next</button></div></section>
+<section class="page day trust"><div class="center"><h1>Trust Day</h1><p>Your trust is my greatest treasure.</p><button class="btn" onclick="next()">Next</button></div></section>
+<section class="page day miss"><div class="center"><h1>Miss Day</h1><p>Even distance can’t stop me from missing you.</p><button class="btn" onclick="next()">Next</button></div></section>
+<section class="page day forever"><div class="center"><h1>Forever Day</h1><p>You are my peace, my smile, my Goddesssss, my forever.</p></div></section>
 
-    <header>
-      <h1>Blackridge Systems</h1>
-      <p>Innovating the Future</p>
-    </header>
+</div>
 
-    <section class="hero">
-      <h2>Welcome to the Next Generation of Technology</h2>
-      <p>We deliver secure, scalable, and smart systems to drive the digital transformation of your business.</p>
-    </section>
+<footer>With endless love — Astitva ❤️</footer>
 
-    <div class="content-below-hero" id="content">
-      <section class="about">
-        <div>
-          <h3>Who We Are</h3>
-          <p>Blackridge Systems is a forward-thinking company focused on developing modern software and cybersecurity solutions tailored for today's world.</p>
-        </div>
-      </section>
+<script>
+let index=0;const app=document.getElementById('app');
+function next(){index++;app.style.transform=`translateX(-${index*100}vw)`}
 
-      <section>
-        <h2 style="text-align:center; margin-bottom:2rem;">Our Services</h2>
-        <div class="services">
-          <div class="service-card"><h3>Custom Software</h3><p>Tailor-made apps for your goals.</p></div>
-          <div class="service-card"><h3>Cybersecurity</h3><p>Detection, prevention, and peace of mind.</p></div>
-          <div class="service-card"><h3>Consulting</h3><p>Strategy and digital growth guidance.</p></div>
-        </div>
-      </section>
+// Falling hearts
+const hearts=document.getElementById('hearts');
+setInterval(()=>{
+ const h=document.createElement('div');
+ h.className='heart';
+ h.innerHTML='💗';
+ h.style.left=Math.random()*100+'%';
+ h.style.animationDuration=4+Math.random()*4+'s';
+ hearts.appendChild(h);
+ setTimeout(()=>h.remove(),8000);
+},400);
+</script>
 
-      <section id="contact" style="text-align:center;">
-        <h2>Contact Us</h2>
-        <p>Email: mahajan010203@gmail.com | Phone: +91 8544786295</p>
-      </section>
-
-      <footer class="footer">&copy; 2025 Blackridge Systems. All rights reserved.</footer>
-    </div>
-  </div>
-
- 
-  <!-- query modal (unchanged) -->
-  <div class="modal" id="queryModal">
-    <div class="modal-content">
-      <button style="float:right;background:none;border:none;color:white;font-size:1.2rem;cursor:pointer;" onclick="closeQueryModal()">✖</button>
-      <h3>Run Custom Query</h3>
-      <textarea id="queryInput" rows="4" style="width:100%;padding:10px;"></textarea>
-      <button onclick="runQuery()">Run Query</button>
-      <pre class="message" id="queryResult" style="text-align:left;max-height:300px;overflow:auto;background:#111;padding:10px;border-radius:5px;"></pre>
-    </div>
-  </div>
-
-  <script>
-    const modal = document.getElementById('authModal');
-    function openModal() { modal.style.display='flex'; }
-    window.onclick = e => {
-      if (e.target===modal) modal.style.display='none';
-      if (e.target===document.getElementById('modal')) document.getElementById('modal').style.display='none';
-    };
-    function submitLogin() {
-      const m = document.getElementById('loginMessage');
-      m.textContent='Logging in...';
-      setTimeout(()=>{m.textContent='Success!';},1000);
-    }
-    setTimeout(()=>{document.getElementById('main').style.display='block';},3000);
-    function revealContent(){
-      const c=document.getElementById('content');
-      const b=document.querySelector('.btn');
-      c.style.display='block'; c.classList.add('fade-in-section'); b.style.display='none';
-    }
-
-    let currentAction='login';
-    function showModal(action){
-      currentAction=action;
-      const m = document.getElementById('modal');
-      m.style.display='flex';
-      document.getElementById('loginForm').style.display = action==='login'?'block':'none';
-      document.getElementById('registerForm').style.display = action==='register'?'block':'none';
-      document.getElementById('msgLogin').textContent='';
-      document.getElementById('msgRegister').textContent='';
-    }
-    document.getElementById('toRegister').onclick=()=>showModal('register');
-    document.getElementById('toLogin').onclick=()=>showModal('login');
-
-    async function submitForm(){
-      const url=`http://localhost:5000/${currentAction}`;
-      let payload;
-      if(currentAction==='login'){
-        payload={ email:document.getElementById('loginUsername').value,
-                  password:document.getElementById('loginPassword').value };
-      } else {
-        payload={ name:document.getElementById('registerUsername').value,
-                  email:document.getElementById('googleEmail').value,
-                  password:document.getElementById('registerPassword').value };
-      }
-      try {
-        const res=await fetch(url,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
-        const data=await res.json();
-        if(currentAction==='login'){
-          document.getElementById('msgLogin').textContent=data.message||'';
-          if(res.ok){ localStorage.setItem('token',data.token);
-            document.getElementById('authButtons').style.display='none';
-            document.getElementById('userActions').style.display='flex';
-            document.getElementById('modal').style.display='none';
-          }
-        } else {
-          document.getElementById('msgRegister').textContent=data.message||'';
-        }
-      } catch {
-        const msgEl = currentAction==='login'?'msgLogin':'msgRegister';
-        document.getElementById(msgEl).textContent='Error. Check backend.';
-      }
-    }
-
-    async function deleteAccount(){
-      const token=localStorage.getItem('token');
-      if(!token) return alert('Login first!');
-      const email=JSON.parse(atob(token.split('.')[1])).email;
-      const res=await fetch('http://localhost:5000/deleteUser',{method:'DELETE',headers:{'Content-Type':'application/json'},body:JSON.stringify({email})});
-      const data=await res.json();
-      alert(data.message);
-      if(res.ok) logout();
-    }
-    function logout(){
-      localStorage.removeItem('token');
-      document.getElementById('authButtons').style.display='flex';
-      document.getElementById('userActions').style.display='none';
-    }
-    async function runQuery(){
-      const q=document.getElementById('queryInput').value.trim();
-      const box=document.getElementById('queryResult');
-      if(!q){box.textContent='Please enter a query.';return;}
-      try {
-        const res=await fetch('http://localhost:5000/query',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({query:q})});
-        const data=await res.json();
-        box.textContent=res.ok?JSON.stringify(data,null,2):data.error||'Something went wrong.';
-      } catch {
-        box.textContent='❌ Cannot connect to backend.';
-      }
-    }
-    function closeQueryModal(){ document.getElementById('queryModal').style.display='none'; }
-
-    window.onload = ()=>{
-      const p = new URLSearchParams(window.location.search).get('token');
-      if(p){
-        localStorage.setItem('token',p);
-        history.replaceState({},document.title,'/blackridge.html');
-        document.getElementById('authButtons').style.display='none';
-        document.getElementById('userActions').style.display='flex';
-      } else if(localStorage.getItem('token')){
-        document.getElementById('authButtons').style.display='none';
-        document.getElementById('userActions').style.display='flex';
-      }
-    };
-  </script>
 </body>
 </html>
+
